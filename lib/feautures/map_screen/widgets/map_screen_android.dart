@@ -1,22 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:redriver/feautures/map_screen/map_screen_interface.dart';
+import 'package:redriver/feautures/map_screen/widgets/map_base.dart';
+import 'package:redriver/providers/applications_provider.dart';
 
-class MapScreenAndroid extends StatelessWidget implements MapScreenInterface {
+class MapScreenWeb extends MapBase {
+  const MapScreenWeb({super.key});
+
   @override
-  final CameraPosition kameraPositionInit;
+  MapScreenAndroidState createState() => MapScreenAndroidState();
+}
 
-  const MapScreenAndroid({
-    super.key,
-    required this.kameraPositionInit,
-  });
-
+class MapScreenAndroidState extends MapBaseState {
   @override
   Widget build(BuildContext context) {
+    final applicationsAsyncValue = ref.watch(applicationsProvider);
+    Set<Marker> markersApps = {};
+
+    if (applicationsAsyncValue.value == null || currentPosition == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    markersApps = applicationsAsyncValue.value!
+        .map((element) => Marker(
+              onTap: () {
+                /* Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ApplicationDetails(),
+                  ),
+                ); */
+              },
+              markerId: MarkerId(element.id),
+              position: LatLng(
+                  element.addressTo.coords.lat, element.addressTo.coords.long),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueBlue),
+            ))
+        .toSet();
     return GoogleMap(
+      myLocationEnabled: true,
+      myLocationButtonEnabled: true,
       mapType: MapType.normal,
-      initialCameraPosition: kameraPositionInit,
-      onMapCreated: (GoogleMapController controller) {},
+      markers: markersApps.union(markers),
+      initialCameraPosition: CameraPosition(target: currentPosition!, zoom: 15),
+      onMapCreated: onMapCreated,
     );
   }
 }

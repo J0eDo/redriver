@@ -19,6 +19,10 @@ dependencies:
   json_annotation: ^4.9.0
   build_runner: ^2.4.13
   geolocator: ^13.0.2
+  google_maps_flutter_web: ^0.5.10
+  easy_stepper: ^0.8.5+1
+  permission_handler: ^11.3.1
+  flutter_svg: ^2.0.16
 
 dev_dependencies:
   flutter_test:
@@ -28,3 +32,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/icons/

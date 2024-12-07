@@ -2,57 +2,25 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'application.g.dart';
 
-
-@JsonSerializable()
-class Application {
-  final String id;
-  final Address addressTo;
-  final Client client;
-  final StatusGroup statusGroup; 
-
-  Application({
-    required this.id,
-    required this.addressTo,
-    required this.client,
-    required this.statusGroup
-
-  });
-
-  factory Application.fromJson(Map<String, dynamic> json) =>
-      _$ApplicationFromJson(json);
-  Map<String, dynamic> toJson() => _$ApplicationToJson(this);
-}
-
+@JsonEnum(valueField: 'value')
 enum StatusGroup {
-  Finished,
-  Inprocess,
-  Archived,
-  Completed,
+  @JsonValue('finished')
+  finished,
+
+  @JsonValue('inprocess')
+  inProcess,
 }
 
 @JsonSerializable()
-class Address {
-  final Coords? coords;
-  final String details;
-  final String flat;
-  final String floor;
-  final String porch;
-  final String domofon;
-  final String commentary;
+class AddressTo {
+  final String address;
+  final Coords coords;
 
-  Address({
-    this.coords,
-    this.details = '', // Значение по умолчанию
-    this.flat = '', // Значение по умолчанию
-    this.floor = '', // Значение по умолчанию
-    this.porch = '', // Значение по умолчанию
-    this.domofon = '', // Значение по умолчанию
-    this.commentary = '', // Значение по умолчанию
-  });
+  AddressTo({required this.address, required this.coords});
 
-  factory Address.fromJson(Map<String, dynamic> json) =>
-      _$AddressFromJson(json);
-  Map<String, dynamic> toJson() => _$AddressToJson(this);
+  factory AddressTo.fromJson(Map<String, dynamic> json) =>
+      _$AddressToFromJson(json);
+  Map<String, dynamic> toJson() => _$AddressToToJson(this);
 }
 
 @JsonSerializable()
@@ -60,13 +28,9 @@ class Coords {
   final double lat;
   final double long;
 
-  Coords({
-    required this.lat,
-    required this.long,
-  });
+  Coords({required this.lat, required this.long});
 
-  factory Coords.fromJson(Map<String, dynamic> json) =>
-      _$CoordsFromJson(json);
+  factory Coords.fromJson(Map<String, dynamic> json) => _$CoordsFromJson(json);
   Map<String, dynamic> toJson() => _$CoordsToJson(this);
 }
 
@@ -74,19 +38,28 @@ class Coords {
 class Client {
   final String name;
   final String id;
-  final String phone;
-  final String email;
-  final String description;
 
-  Client({
-    required this.name,
+  Client({required this.name, required this.id});
+
+  factory Client.fromJson(Map<String, dynamic> json) => _$ClientFromJson(json);
+  Map<String, dynamic> toJson() => _$ClientToJson(this);
+}
+
+@JsonSerializable()
+class Application {
+  final String id;
+  final AddressTo addressTo;
+  final Client client;
+  final StatusGroup statusGroup;
+
+  Application({
     required this.id,
-    required this.phone,
-    required this.email,
-    required this.description,
+    required this.addressTo,
+    required this.client,
+    required this.statusGroup,
   });
 
-  factory Client.fromJson(Map<String, dynamic> json) =>
-      _$ClientFromJson(json);
-  Map<String, dynamic> toJson() => _$ClientToJson(this);
+  factory Application.fromJson(Map<String, dynamic> json) =>
+      _$ApplicationFromJson(json);
+  Map<String, dynamic> toJson() => _$ApplicationToJson(this);
 }

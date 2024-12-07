@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:redriver/feautures/applications/applications.dart';
+import 'package:redriver/feautures/applications/applications_screen.dart';
 import 'package:redriver/feautures/map_screen/map_screen.dart';
 import 'package:redriver/feautures/profile/profile.dart';
 
@@ -16,7 +16,7 @@ class _MainLayoutState extends State<MainLayout> {
   final PageController _pageController = PageController();
 
   final List<Widget> _tabs = [
-    const Applications(),
+    const ApplicationsScreen(),
     const MapScreen(),
     const Profile(),
   ];
